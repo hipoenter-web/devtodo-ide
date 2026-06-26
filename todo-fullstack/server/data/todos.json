@@ -1,0 +1,24 @@
+[
+  {
+    "id": "sample-1",
+    "title": "React 화면에서 할 일 조회하기",
+    "completed": true,
+    "createdAt": "2026-06-24T09:00:00.000Z",
+    "updatedAt": "2026-06-24T09:00:00.000Z"
+  },
+  {
+    "id": "sample-2",
+    "title": "Express REST API와 연결하기",
+    "completed": false,
+    "createdAt": "2026-06-24T09:05:00.000Z",
+    "updatedAt": "2026-06-24T09:05:00.000Z"
+  },
+  {
+    "id": "sample-3",
+    "title": "MongoDB 연결 구조 설명 정리하기",
+    "completed": false,
+    "createdAt": "2026-06-24T09:10:00.000Z",
+    "updatedAt": "2026-06-24T09:10:00.000Z"
+  }
+]
+

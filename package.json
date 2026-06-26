@@ -1,0 +1,27 @@
+{
+  "name": "devtodo-ide",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "todo:dev": "node todo-fullstack/dev.js",
+    "todo:server": "node todo-fullstack/server/index.js",
+    "todo:client": "vite todo-fullstack/client --host 127.0.0.1 --port 5175",
+    "todo:build": "vite build todo-fullstack/client --outDir ../../dist-todo",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^9.0.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.1",
+    "vite": "^8.1.0"
+  }
+}
