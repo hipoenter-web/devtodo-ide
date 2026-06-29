@@ -6,6 +6,12 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+.DS_Store
+.devtodo-*.log
+.devtodo-*.pid
+아카이브.zip
+*.psd
+*.psb
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -50,6 +56,7 @@ web_modules/
 
 # Optional npm cache directory
 .npm
+.pnpm-store/
 
 # Optional eslint cache
 .eslintcache
@@ -90,6 +97,7 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+dist-todo
 
 # Gatsby files
 .cache/

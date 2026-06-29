@@ -3,8 +3,14 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite",
+    "server:dev": "node --watch server/index.js",
+    "start": "node server/index.js",
     "todo:dev": "node todo-fullstack/dev.js",
     "todo:server": "node todo-fullstack/server/index.js",
     "todo:client": "vite todo-fullstack/client --host 127.0.0.1 --port 5175",

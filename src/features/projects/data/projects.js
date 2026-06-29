@@ -1,0 +1,38 @@
+export const projectCatalog = [
+  {
+    id: 'econer-multitab',
+    clientId: 'econer',
+    name: '에코너 멀티탭',
+    folderName: '에코너 멀티탭',
+    type: 'design-gallery',
+    status: 'review',
+    description: '멀티탭 상세페이지 디자인 이미지 검수용 샘플',
+  },
+  {
+    id: 'damoae-detail-page',
+    clientId: 'damoae',
+    name: '다모애 페이지 완성',
+    folderName: '다모애 페이지 완성',
+    type: 'design-gallery',
+    status: 'review',
+    description: '상세페이지 이미지/GIF 구성 검수용 샘플',
+  },
+  {
+    id: 'seoripul-makgeolli',
+    clientId: 'seoripul',
+    name: '서리풀 막걸리',
+    folderName: '서리풀 막걸리',
+    type: 'design-gallery',
+    status: 'review',
+    description: '막걸리 상세페이지 이미지 순서 검수용 샘플',
+  },
+  {
+    id: 'coolbottle-first-page',
+    clientId: 'coolbottle',
+    name: '쿨보틀 최초 완성 페이지',
+    folderName: '쿨보틀 최초 완성 페이지',
+    type: 'design-gallery',
+    status: 'review',
+    description: '쿨보틀 상세페이지 이미지/GIF 구성 검수용 샘플',
+  },
+]
