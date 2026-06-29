@@ -198,7 +198,7 @@ server/
 이 프로젝트는 Render 단일 Web Service 배포를 기준으로 구성했습니다. `render.yaml`에는 다음 흐름이 정의되어 있습니다.
 
 ```text
-Build Command: corepack enable && pnpm install --no-frozen-lockfile && pnpm run build
+Build Command: pnpm install --frozen-lockfile && pnpm run build
 Start Command: pnpm start
 ```
 
