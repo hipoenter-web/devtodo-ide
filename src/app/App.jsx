@@ -60,6 +60,33 @@ const fullLayout = {
   activity: true,
 }
 
+const centerPanelBounds = {
+  activity: { min: 190, max: 560 },
+  preview: { min: 220, max: 680 },
+}
+
+const defaultCenterPanelHeights = {
+  activity: 270,
+  preview: 300,
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function ResizeHandle({ label, onPointerDown }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onPointerDown={onPointerDown}
+      className="group absolute bottom-0 left-0 right-0 z-10 flex h-6 cursor-row-resize touch-none items-end justify-center bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent pb-2 outline-none transition hover:from-cyan-950/45"
+    >
+      <span className="h-1 w-16 rounded-full bg-slate-700/80 transition group-hover:w-24 group-hover:bg-cyan-300/80 group-focus-visible:w-24 group-focus-visible:bg-cyan-300/80" />
+    </button>
+  )
+}
+
 function applySavedGalleryOrder(items, scope) {
   if (!scope) return items
 
@@ -97,6 +124,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [apiProjects, setApiProjects] = useState(null)
   const [layout, setLayout] = useState(defaultLayout)
+  const [centerPanelHeights, setCenterPanelHeights] = useState(
+    defaultCenterPanelHeights,
+  )
   const [workspaceTree, setWorkspaceTree] = useState([])
   const [fileContents, setFileContents] = useState({})
   const [editableFiles, setEditableFiles] = useState({})
@@ -146,6 +176,7 @@ function App() {
     selectedFile?.path ||
     projectName
   const hasCenterPanel = layout.activity || layout.preview || layout.editor
+  const shouldPreviewFillCenter = layout.preview && !layout.editor
   const mainGridClass =
     layout.project && layout.review
       ? 'lg:grid-cols-[230px_minmax(420px,1fr)_minmax(330px,410px)]'
@@ -154,6 +185,41 @@ function App() {
         : layout.review
           ? 'lg:grid-cols-[minmax(420px,1fr)_minmax(330px,410px)]'
           : 'lg:grid-cols-[minmax(420px,1fr)]'
+
+  const startCenterPanelResize = (panelName, event) => {
+    event.preventDefault()
+
+    const startY = event.clientY
+    const startHeight = centerPanelHeights[panelName]
+    const bounds = centerPanelBounds[panelName]
+
+    const handlePointerMove = (moveEvent) => {
+      const nextHeight = clamp(
+        startHeight + moveEvent.clientY - startY,
+        bounds.min,
+        bounds.max,
+      )
+
+      setCenterPanelHeights((current) => ({
+        ...current,
+        [panelName]: nextHeight,
+      }))
+    }
+
+    const stopResize = () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerup', stopResize)
+      window.removeEventListener('pointercancel', stopResize)
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+
+    document.body.style.cursor = 'row-resize'
+    document.body.style.userSelect = 'none'
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerup', stopResize)
+    window.addEventListener('pointercancel', stopResize)
+  }
 
   const addLog = (message, type = 'info') => {
     setLogs((current) => [...current, createLog(message, type)].slice(-80))
@@ -705,24 +771,60 @@ function App() {
           )}
 
           {layout.activity && (
-          <div className="h-[270px] min-h-[190px] shrink-0 resize-y overflow-auto border-b border-slate-800">
-            <ActivityPanel
-              logs={logs}
-              onClear={() => setLogs([])}
+          <div
+            className="relative shrink-0 overflow-hidden border-b border-slate-800"
+            style={{
+              height: `${centerPanelHeights.activity}px`,
+              minHeight: `${centerPanelBounds.activity.min}px`,
+            }}
+          >
+            <div className="h-full overflow-hidden">
+              <ActivityPanel
+                logs={logs}
+                onClear={() => setLogs([])}
+              />
+            </div>
+            <ResizeHandle
+              label="Activity Log 높이 조절"
+              onPointerDown={(event) =>
+                startCenterPanelResize('activity', event)
+              }
             />
           </div>
           )}
 
           {layout.preview && (
-          <div className="h-[300px] min-h-[220px] shrink-0 resize-y overflow-auto border-b border-slate-800">
-            <ProjectPreview
-              projectName={projectName}
-              selectedFileName={previewTargetName}
-              refreshKey={refreshKey}
-              isRunning={isRunning}
-              previewContent={previewContent}
-              onReorderGallery={reorderPreviewGallery}
-            />
+          <div
+            className={`relative overflow-hidden border-b border-slate-800 ${
+              shouldPreviewFillCenter ? 'min-h-[220px] flex-1' : 'shrink-0'
+            }`}
+            style={
+              shouldPreviewFillCenter
+                ? { minHeight: `${centerPanelBounds.preview.min}px` }
+                : {
+                    height: `${centerPanelHeights.preview}px`,
+                    minHeight: `${centerPanelBounds.preview.min}px`,
+                  }
+            }
+          >
+            <div className="h-full overflow-hidden">
+              <ProjectPreview
+                projectName={projectName}
+                selectedFileName={previewTargetName}
+                refreshKey={refreshKey}
+                isRunning={isRunning}
+                previewContent={previewContent}
+                onReorderGallery={reorderPreviewGallery}
+              />
+            </div>
+            {!shouldPreviewFillCenter && (
+              <ResizeHandle
+                label="Preview 높이 조절"
+                onPointerDown={(event) =>
+                  startCenterPanelResize('preview', event)
+                }
+              />
+            )}
           </div>
           )}
 

@@ -1,7 +1,16 @@
 import { apiRequest } from './httpClient'
 
-export async function fetchComments(projectId) {
-  const data = await apiRequest(`/projects/${projectId}/comments`)
+export async function fetchComments(projectId, keyword = '') {
+  const searchParams = new URLSearchParams()
+  const nextKeyword = keyword.trim()
+
+  if (nextKeyword) searchParams.set('keyword', nextKeyword)
+
+  const query = searchParams.toString()
+  const data = await apiRequest(
+    `/projects/${projectId}/comments${query ? `?${query}` : ''}`,
+  )
+
   return data.comments || []
 }
 

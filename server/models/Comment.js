@@ -32,4 +32,6 @@ const commentSchema = new mongoose.Schema(
   },
 )
 
+commentSchema.index({ message: 'text', author: 'text', role: 'text' })
+
 export default mongoose.model('Comment', commentSchema)

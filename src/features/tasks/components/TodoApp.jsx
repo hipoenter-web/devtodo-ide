@@ -181,11 +181,11 @@ function TodoApp({
 
   return (
     <section
-      className={`mx-auto w-full overflow-hidden rounded-2xl border border-slate-700/70 bg-[#151c27]/95 shadow-2xl shadow-black/25 ${
-        compact ? 'max-w-none' : 'max-w-lg'
+      className={`mx-auto flex w-full flex-col overflow-hidden rounded-2xl border border-slate-700/70 bg-[#151c27]/95 shadow-2xl shadow-black/25 ${
+        compact ? 'max-h-[430px] max-w-none' : 'max-h-[720px] max-w-lg'
       }`}
     >
-      <div className="border-b border-slate-800 px-5 pb-4 pt-5">
+      <div className="shrink-0 border-b border-slate-800 px-5 pb-4 pt-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300">
@@ -214,7 +214,7 @@ function TodoApp({
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="flex min-h-0 flex-1 flex-col p-5">
         {permissions.canManageTasks ? (
           <TodoForm onAdd={addTodo} />
         ) : (
@@ -249,14 +249,16 @@ function TodoApp({
           </span>
         </div>
 
-        <TodoList
-          todos={visibleTodos}
-          onToggle={toggleTodo}
-          onEdit={editTodo}
-          onDelete={deleteTodo}
-          canManage={permissions.canManageTasks}
-          canDelete={permissions.canDeleteTasks}
-        />
+        <div className="min-h-[132px] flex-1 overflow-y-auto pr-1 [scrollbar-color:#334155_transparent] [scrollbar-width:thin]">
+          <TodoList
+            todos={visibleTodos}
+            onToggle={toggleTodo}
+            onEdit={editTodo}
+            onDelete={deleteTodo}
+            canManage={permissions.canManageTasks}
+            canDelete={permissions.canDeleteTasks}
+          />
+        </div>
       </div>
     </section>
   )

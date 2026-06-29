@@ -130,9 +130,18 @@ export function deleteMemoryTodo({ projectKey, todoId }) {
   return todos.length !== beforeCount
 }
 
-export function listMemoryComments(projectKey) {
+export function listMemoryComments(projectKey, keyword = '') {
+  const normalizedKeyword = normalize(keyword)
+
   return comments
-    .filter((comment) => comment.projectKey === projectKey)
+    .filter((comment) => {
+      if (comment.projectKey !== projectKey) return false
+      if (!normalizedKeyword) return true
+
+      return [comment.author, comment.role, comment.message].some((value) =>
+        normalize(value).includes(normalizedKeyword),
+      )
+    })
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
     .map(serializeComment)
 }
